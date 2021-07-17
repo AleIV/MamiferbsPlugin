@@ -1,19 +1,31 @@
 package net.noobsters.core.paper;
 
 import org.bukkit.Bukkit;
-import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import co.aikar.commands.PaperCommandManager;
+import lombok.Getter;
+
 /**
- * Core
+ * MAMIFERBS
  */
-public class Core extends JavaPlugin implements Listener{
-    // GUI tutorial: https://github.com/MrMicky-FR/FastInv
-    // Scoreboard Tutorial: https://github.com/MrMicky-FR/FastBoard
-    // Commands Tutorial: https://github.com/aikar/commands/wiki/Using-ACF
+public class Core extends JavaPlugin{
+
+    private static @Getter Core instance;
+    private @Getter PaperCommandManager commandManager;
+    private @Getter GlobalListener globalListener;
+
     @Override
     public void onEnable() {
-        Bukkit.getPluginManager().registerEvents(this, this);
+        instance = this;
+
+        commandManager = new PaperCommandManager(this);
+
+        commandManager.registerCommand(new FerbslandCMD(this));
+
+        globalListener = new GlobalListener(this);
+
+        Bukkit.getPluginManager().registerEvents(globalListener, this);
 
     }
 
